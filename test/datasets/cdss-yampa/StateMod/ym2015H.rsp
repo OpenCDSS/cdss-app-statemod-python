@@ -1,0 +1,52 @@
+# 
+# ym2015H.rsp
+#
+# StateMod Response File
+# for the Yampa River Basin Historical Calibration simulation
+# This file is step 5 of the Yampa model development
+# Step 1 = use ym2015.rsp file with StateMod option 1
+# Step 2 = Mixed Station Model
+# Step 3 = use ym2015x.rsp file with StateMod option 9
+# Step 4 = TSTool with ShiftTroutCreek.TSTool command file
+# Step 5 = this .rsp file with StateMod option 2
+# Step 6 = run ym2015B.rsp file with StateMod option 2
+#
+# For addition details, please refer to the ReadMe.txt and the users manual documentation
+#
+# Name                                                                  Description (optional)
+#---------------                                                        ----------------------
+# CONTROL DATA
+Control                                 = ym2015.ctl
+# RIVER NETWORK 
+River_Network                           = ym2015.rin
+# CONSUMPTIVE USE DATA
+IrrigationPractice_Yearly               = ym2015.ipy
+ConsumptiveWaterRequirement_Monthly     = ym2015.iwr
+StateCU_Structure                       = ym2015.str
+# STREAM GAGE DATA
+StreamGage_Station                      = ym2015.ris
+Stream_Base_Monthly                     = ym2015x_mod.xbm
+StreamGage_Historic_Monthly             = ym2015.rih
+StreamEstimate_Coefficients             = ym2015.rib
+# DIVERSION DATA
+Diversion_Station                       = ym2015.dds
+Diversion_Right                         = ym2015.ddr
+Diversion_Historic_Monthly              = ym2015.ddh
+Diversion_Demand_Monthly                = ym2015H.ddm
+# RESERVOIR DATA 
+Reservoir_Station                       = ym2015.res
+Reservoir_Right                         = ym2015.rer
+Reservoir_Target_Monthly                = ym2015H.tar
+Reservoir_Historic_Monthly              = ym2015.eom
+Evaporation_Annual                      = ym2015.eva
+# INSTREAM FLOW DATA  
+Instreamflow_Station                    = ym2015.ifs
+Instreamflow_Right                      = ym2015.ifr
+Instreamflow_Demand_AverageMonthly      = ym2015.ifa
+# OPERATIONS
+Operational_Right                       = ym2015H.opr
+# DELAY TABLE DATA
+DelayTable_Monthly                      = ym2015.dly
+# PLAN DATA
+Plan_Data                               = ym2015.pln
+

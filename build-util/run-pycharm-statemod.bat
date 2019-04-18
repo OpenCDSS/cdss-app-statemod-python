@@ -24,13 +24,18 @@ rem if exist C:\Program Files\Python37 set PYTHONPATH=C:\Program Files\Python37
 rem Set the environment variable that lets this batch file know that the environment is set up
 set PYCHARM_STATEMOD_ENV_SETUP=YES
 
+rem Set the libraries in the python path
+set PYTHONPATH=%PYTHONPATH%;%USERPROFILE%\cdss-dev\StateMod-Python\git-repos\cdss-lib-cdss-python\src
+set PYTHONPATH=%PYTHONPATH%;%USERPROFILE%\cdss-dev\StateMod-Python\git-repos\cdss-lib-common-python\src
+set PYTHONPATH=%PYTHONPATH%;%USERPROFILE%\cdss-dev\StateMod-Python\git-repos\cdss-lib-models-python\src
+
 :run
 
 rem Echo environment variables for troubleshooting
 echo.
 echo PATH=%PATH%
 rem echo PYTHONHOME=%PYTHONHOME%
-rem echo PYTHONPATH=%PYTHONPATH%
+echo PYTHONPATH=%PYTHONPATH%
 echo.
 
 rem Start the PyCharm IDE, /B indicates to use the same windows
