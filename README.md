@@ -94,9 +94,9 @@ cdss-app-statemod-cs
 
 1. `cd` into `cdss-app-statemod-python/build-util/` 
 2. run `run-pycharm-statemod.bat`. This script is specifically designed to open PyCharm with the appropriate dependencies loaded into the project. It may take a few moments to open.
-3. If no previous PyCharm project is opened the following window should display: ![Pycharm Open Screen](C:\Users\intern2\cdss-dev\StateMod-Python\git-repos\cdss-app-statemod-python\doc\images\start_pycharm.png)
+3. If no previous PyCharm project is opened the following window should display: ![Pycharm Open Screen](./doc/images/start_pycharm.png)
 4. Click ***Create New Project*** 
-5. Set the Location for the new project to be the path to the StateMod python repositories as such: ![](C:\Users\intern2\cdss-dev\StateMod-Python\git-repos\cdss-app-statemod-python\doc\images\open_project.PNG)
+5. Set the Location for the new project to be the path to the StateMod python repositories as such: ![](doc/images/open_project.PNG)
 6. PyCharm will ask "The directory 'C:\Users\username\cdss-dev\StateMod-Python\git-repos' is not empty. Would you like to create a project from existing sources instead?". Click ***Yes***.   
 7. All files will be loaded into a new PyCharm project, and the script to open PyCharm should ensure the python path is correct as to import all other dependency repositories.
 8. Right Click on the main repository `cdss-app-statemod-python` and select ***Mark Directory as*** > ***Sources Root*** to let PyCharm know this is the main repository which depends on all the rest.
