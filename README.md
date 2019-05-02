@@ -12,6 +12,8 @@ CDSS prototype of StateMod written in Python
 
 ## Introduction ## 
 
+The code in this repository, and the dependency repositories, was ported from the Java code found in the repository [cdss-app-statemod-java](https://github.com/OpenCDSS/cdss-app-statemod-java). In an effort to determine with programming language would be best suited if converting the StateMod software from Fortran to another language. The initial StateMod, Fortran, code was converted to Java by [@Smalers](https://github.com/smalers). The Java code was then converted to C# before being ported and converted to Python. The first file ported over was `StateMod_Main.py` as the entry point for the program. Additional files were added with the necessary classes and functions that were needed by this entry point. Files were added in a branching manner to ensure that all code had access to the necessary classes and functions to run properly.
+
 ## Repository Contents ##
 
 The following folder structure is recommended for development.
@@ -56,11 +58,11 @@ cdss-app-statemod-cs
 Contributions to this project can be submitted using the following options:
 
 1. StateMod Python software developers with commit privileges can write to this repository
-  as per normal OpenCDSS development protocols.
+    as per normal OpenCDSS development protocols.
 2. Post an issue on GitHub with suggested change.  Provide information using the issue template.
 3. Fork the repository, make changes, and do a pull request.
-  Contents of the current master branch should be merged with the fork to minimize
-  code review before committing the pull request.
+    Contents of the current master branch should be merged with the fork to minimize
+    code review before committing the pull request.
 
 See also the [OpenCDSS / StateMod protocols](http://learn.openwaterfoundation.org/cdss-website-opencdss/statemod/statemod/).
 
