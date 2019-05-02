@@ -57,7 +57,7 @@ C:\Users\user\                                 User's home folder for Windows.
 
 This repository contains the following:
 ```
-cdss-app-statemod-cs
+cdss-app-statemod-python
    .git/                                       Standard Git software folder for repository (DO NOT TOUCH).
    .gitattributes/                             Standard Git configuration file for repository (for portability).
    .gitignore/                                 Standard Git configuration file to ignore dynamic working files.
