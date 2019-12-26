@@ -2,6 +2,11 @@
 rem Batch file to set the environment for and run PyCharm.
 rem - Start PyCharm with the configured environment.
 
+rem Get the current folder of the script, used to specify the path to the project
+rem - will have \ at the end
+SET SM_CURRENT_DIR=%~dp0%
+echo Script directory=%SM_CURRENT_DIR%
+
 rem Set an environment variable to indicate that the environment is setup.
 rem - this ensures that setup is done once
 rem - then PyCharm can be restarted in the same window without reconfiguring the environment.
@@ -41,14 +46,25 @@ echo.
 rem Start the PyCharm IDE, /B indicates to use the same windows
 rem - command line parameters passed to this script will be passed to PyCharm 
 rem - PyCharm will use the Python interpreter configured for the project
+rem - Specify the folder for the project so it does not default to some other project
+rem   that was opened last
 echo Starting PyCharm using %PYCHARM% - prompt will display and PyCharm may take a few seconds to start.
-start "PyCharm aware of" /B %PYCHARM% %*
-goto end
+SET SM_PROJECT_DIR=%SM_CURRENT_DIR%..
+if exist %SM_PROJECT_DIR% start "PyCharm aware of StateMod project" /B %PYCHARM% %SM_PROJECT_DIR% %*
+if not exist %SM_PROJECT_DIR% goto noproject
+goto endofbat
+
+:noproject
+rem No project directory (should not happen)
+echo Project folder does not exist:  %SM_PROJECT_DIR%
+echo Not starting PyCharm.
+exit /b 1
 
 :nopycharm
 
 rem Expected PyCharm was not found
-echo Pycharm was not found: %PYCHARM%
+echo PyCharm was not found in expected location C:\Program Files\JetBrains\PyCharm Community Edition NNNN.N.N\bin\pycharm64.exe
+echo May need to update this script for newer versions of PyCharm.
 exit /b 1
 
-:end
+:endofbat
