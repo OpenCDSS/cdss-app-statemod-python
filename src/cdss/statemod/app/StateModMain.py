@@ -124,7 +124,7 @@ class StateModMain:
             # Open the dataset by reading the response file.
             # - try reading dataset files
             try:
-                readData: bool = True
+                readData = True
                 readTimeSeries = True
                 useGUI = False
                 # TODO @jurentie 04/14/2019 - need to work out GUI components for python

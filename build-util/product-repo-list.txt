@@ -1,4 +1,4 @@
-# Repositories that comprise StateMod C#
+# Repositories that comprise StateMod Python
 # - assumes that local folder name will match the repository name
 cdss-app-statemod-python
 cdss-lib-cdss-python
