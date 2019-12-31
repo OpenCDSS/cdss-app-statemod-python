@@ -20,6 +20,7 @@ rem - this assumes that the developer is using the newest version installed for 
 if exist "C:\Program Files\JetBrains\PyCharm Community Edition 2018.1.3\bin\pycharm64.exe" SET PYCHARM="C:\Program Files\JetBrains\PyCharm Community Edition 2018.1.3\bin\pycharm64.exe"
 if exist "C:\Program Files\JetBrains\PyCharm Community Edition 2018.2.4\bin\pycharm64.exe" SET PYCHARM="C:\Program Files\JetBrains\PyCharm Community Edition 2018.2.4\bin\pycharm64.exe"
 if exist "C:\Program Files\JetBrains\PyCharm Community Edition 2018.2.6\bin\pycharm64.exe" SET PYCHARM="C:\Program Files\JetBrains\PyCharm Community Edition 2018.2.6\bin\pycharm64.exe"
+if exist "C:\Program Files\JetBrains\PyCharm Community Edition 2019.3.1\bin\pycharm64.exe" SET PYCHARM="C:\Program Files\JetBrains\PyCharm Community Edition 2019.3.1\bin\pycharm64.exe"
 if not exist %PYCHARM% goto nopycharm
 
 rem Set the Python to use
