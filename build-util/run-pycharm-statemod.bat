@@ -43,16 +43,24 @@ rem echo PYTHONHOME=%PYTHONHOME%
 echo PYTHONPATH=%PYTHONPATH%
 echo.
 
-rem Start the PyCharm IDE, /B indicates to use the same windows
+rem Start the PyCharm IDE, /B indicates to use the same windows (restart session if necessary)
 rem - command line parameters passed to this script will be passed to PyCharm 
-rem - PyCharm will use the Python interpreter configured for the project
+rem - PyCharm will use the Python interpreter configured for the project virtual environment
 rem - Specify the folder for the project so it does not default to some other project
-rem   that was opened last
+rem   that was opened last (the 'git-repos' folder, which is where the project should have been created).
 echo Starting PyCharm using %PYCHARM% - prompt will display and PyCharm may take a few seconds to start.
-SET SM_PROJECT_DIR=%SM_CURRENT_DIR%..
-if exist %SM_PROJECT_DIR% start "PyCharm aware of StateMod project" /B %PYCHARM% %SM_PROJECT_DIR% %*
+SET SM_PROJECT_DIR=%SM_CURRENT_DIR%..\..
+SET SM_IDEA_DIR=%SM_CURRENT_DIR%..\..\.idea
+if not exist %SM_IDEA_DIR% goto noidea
 if not exist %SM_PROJECT_DIR% goto noproject
+if exist %SM_PROJECT_DIR% start "PyCharm aware of StateMod project" /B %PYCHARM% %SM_PROJECT_DIR% %*
 goto endofbat
+
+:noidea
+rem No .idea directory (should not happen if project was set up in a standard way)
+echo .idea folder does not exist:  %SM_IDEA_DIR%
+echo PyCharm project does not exist.  Not starting PyCharm.
+exit /b 1
 
 :noproject
 rem No project directory (should not happen)
