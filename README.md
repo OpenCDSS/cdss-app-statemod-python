@@ -68,19 +68,19 @@ C:\Users\user\                                 User's home folder for Windows.
 This repository contains the following:
 ```
 cdss-app-statemod-python
-   .git/                                       Standard Git software folder for repository (DO NOT TOUCH).
-   .gitattributes/                             Standard Git configuration file for repository (for portability).
-   .gitignore/                                 Standard Git configuration file to ignore dynamic working files.
-   .build-util/                                Scripts to help in the StateMod Python development environment.
-   src/
-     cdss/
-       statemod/
-         app/                                  Contains StateMod_Main.py, main entry point to the application
-   test/
-     datasets/
-       cdss-yampa/                             Tests for StateMod application
-   README.md                                   This readme file
-   LICENSE.md                                  StateMod Java license file.
+  .git/                                        Standard Git folder for repository (DO NOT MODIFY).
+  .gitattributes/                              Standard Git configuration file for repository (for portability).
+  .gitignore/                                  Standard Git configuration file to ignore dynamic working files.
+  build-util/                                  Scripts to help in the StateMod Python development environment.
+  src/
+    cdss/
+      statemod/
+        app/                                   Contains StateMod_Main.py, main entry point to the application.
+  test/
+    datasets/
+      cdss-ym2015/                             Tests for StateMod application - Yampa dataset input files.
+  README.md                                    This file.
+  LICENSE.md                                   StateMod Java license file.
 ```
 
 ## Development Environment Setup ##
@@ -96,20 +96,23 @@ It is assumed that Git for Windows has been installed.  Git Bash will be used fo
 
 ### Download necessary repositories ###
 
+Several Python repositories are used, matching Java code that was ported to Python for this prototype.
+Each repository is cloned to collectively result in the StateMod Python software.
+
 1. Create a folder:  `C:\Users\user\cdss-dev\StateMod-Python\git-repos`
 2. Using Git Bash:
 	1. `cd` to the `git-repos` folder.
 	2. Clone main repository: `git clone https://github.com/OpenCDSS/cdss-app-statemod-python.git` 
 	3. `cd cdss-app-statemod-python/build-util` 
-	4. Run `build-util/git-clone-all-sm.sh` and follow through the prompts.
+	4. Run `git-clone-all-sm.sh` and follow the prompts to clone related repositories.
 	This will automatically download the remaining repositories locally. 
 
 ### Set up a StateMod-Python project in PyCharm ###
 
 PyCharm uses a "project" to manage software.
 This is different than Eclipse/Java, which uses a workspace that contains multiple projects.
-Because it is easy to set up a PyCharm project and because project files may vary for different
-developers, it is best to NOT store project files in repositories.
+Because it is easy to set up a PyCharm project and because project files will be modified for different developers,
+it is best to NOT store PyCharm project files in repositories.
 Therefore, the following steps describe how to set up a new Python project
 that use multiple GitHub repositories, each containing Python code.
 This approach can be revised later if a better approach is determined.
@@ -117,20 +120,23 @@ This approach can be revised later if a better approach is determined.
 1. Start PyCharm from the ***Start / JetBrains / PyCharm*** menu for the desired (typically most recent) version.
 **Do not use the run script described below in step 6.**
 It may take awhile to open.
-If PyCharm has been used before, it may list previous projects to open.
+If PyCharm has been used before, it may list previous projects to open.<br>
 ![Pycharm Open Screen](./doc/images/start-pycharm.png)
-2. Click ***Create New Project*** 
-Select the location for the new project to be the `C:\Users\username\cdss-dev\StateMod-Python\git-repos` folder
+2. Click ***Create New Project***  to create a new project.
+Select the location for the new project to be the `C:\Users\user\cdss-dev\StateMod-Python\git-repos` folder
 (or otherwise be consistent with location of source files).
 Specifying the `git-repos` folder
 will allow PyCharm to see the multiple code folders from separate repositories.
 Complete the information for new project as shown below.
-Note that the folder for Python virtual environment is at the same level as `git-repos` folder
-and not saved in a repository.
+Note that the folder for Python virtual environment is in the `git-repos/cdss-app-statemod-python` folder.
+Attempting to use a folder parallel or above the `git-repos` folder results in no virtual environment being created.
+The folder that is chosen in the repository should be added to the `.gitignore` file if it does
+not match the existing pattern in that file.
 ![pycharm-new-project](doc/images/pycharm-new-project.png)
 3. Press ***Create***.
-PyCharm will ask "The directory 'C:\Users\username\cdss-dev\StateMod-Python\git-repos' is not empty.
-Would you like to create a project from existing sources instead?". Click ***Yes***. 
+PyCharm will ask "The directory 'C:\Users\user\cdss-dev\StateMod-Python\git-repos' is not empty.
+Would you like to create a project from existing sources instead?".
+Click ***Yes*** to associate the PyCharm project with existing Git repository files.
 4. All files will be loaded into a new PyCharm project.
 A folder `git-repos/.idea/` will be created with PyCharm project files,
 which will not be saved in any repository.
