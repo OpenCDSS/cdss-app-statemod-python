@@ -123,15 +123,16 @@ It may take awhile to open.
 If PyCharm has been used before, it may list previous projects to open.<br>
 ![Pycharm Open Screen](./doc/images/start-pycharm.png)
 2. Click ***Create New Project***  to create a new project.
+If the welcome screen is not as shown above and PyCharm remembers an old project configuration,
+use the ***File / New Project*** to configure a new project, which will replace the remembered projected.
 Select the location for the new project to be the `C:\Users\user\cdss-dev\StateMod-Python\git-repos` folder
 (or otherwise be consistent with location of source files).
 Specifying the `git-repos` folder
 will allow PyCharm to see the multiple code folders from separate repositories.
 Complete the information for new project as shown below.
-Note that the folder for Python virtual environment is in the `git-repos/cdss-app-statemod-python` folder.
-Attempting to use a folder parallel or above the `git-repos` folder results in no virtual environment being created.
+Note that the folder for Python virtual environment in this case is in the `git-repos/cdss-app-statemod-python` folder.
 The folder that is chosen in the repository should be added to the `.gitignore` file if it does
-not match the existing pattern in that file.
+not match the existing pattern in that file.<br>
 ![pycharm-new-project](doc/images/pycharm-new-project.png)
 3. Press ***Create***.
 PyCharm will ask "The directory 'C:\Users\user\cdss-dev\StateMod-Python\git-repos' is not empty.
@@ -140,6 +141,9 @@ Click ***Yes*** to associate the PyCharm project with existing Git repository fi
 4. All files will be loaded into a new PyCharm project.
 A folder `git-repos/.idea/` will be created with PyCharm project files,
 which will not be saved in any repository.
+If the virtual environment folder is not created,
+then create it by following the
+[PyCharm Virtual Environment instructions](https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html).
 5. Right Click on the main repository `cdss-app-statemod-python` and select
 ***Mark Directory as*** > ***Sources Root*** to let PyCharm know this is the main repository
 that depends on the other repositories.

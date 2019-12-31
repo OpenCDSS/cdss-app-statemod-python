@@ -2,12 +2,10 @@
 
 # Ignore user-specific files in PyCharm environment
 # - based on experience, it is easy enough to set up a PyCharm dev environment
-#   so don't hand off any PyCharm files in the repository
+#   so don't save in Git any PyCharm files in the repository
 .idea/
-venv/
+venv*/
 __pycache__/
-# The following is a newer convention
-venv-qgis-python37/
 
 # Ignore "junk" and other files often used for work
 junk
