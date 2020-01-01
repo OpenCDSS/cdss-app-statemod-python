@@ -1,4 +1,4 @@
-## StateMod-Python ##
+# cdss-app-statemod-python #
 
 CDSS prototype of StateMod written in Python
 
@@ -9,6 +9,8 @@ CDSS prototype of StateMod written in Python
 * [Maintainers](#maintainers)
 * [License](#license)
 * [Contact](#contact)
+
+-------------------
 
 ## Introduction ## 
 
@@ -104,7 +106,7 @@ Each repository is cloned to collectively result in the StateMod Python software
 	1. `cd` to the `git-repos` folder.
 	2. Clone main repository: `git clone https://github.com/OpenCDSS/cdss-app-statemod-python.git` 
 	3. `cd cdss-app-statemod-python/build-util` 
-	4. Run `git-clone-all-sm.sh` and follow the prompts to clone related repositories.
+	4. Run `./git-clone-all-sm.sh` and follow the prompts to clone related repositories.
 	This will automatically download the remaining repositories locally. 
 
 ### Set up a StateMod-Python project in PyCharm ###
@@ -144,10 +146,10 @@ which will not be saved in any repository.
 If the virtual environment folder is not created,
 then create it by following the
 [PyCharm Virtual Environment instructions](https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html).
-5. Right Click on the main repository `cdss-app-statemod-python` and select
-***Mark Directory as*** > ***Sources Root*** to let PyCharm know this is the main repository
-that depends on the other repositories.
-The PyCharm interface will be similar to the following:
+5. For each repository, expand the folders, select the `src` folder and select
+***Mark Directory as / Sources Root*** to let PyCharm know which folders contain source code
+that will be known for Python `import` statements.
+The PyCharm interface will be similar to the following:<br>
 ![pycharm-new-project](doc/images/pycharm-new-project2.png)
 6. Subsequently, use Git Bash to start PyCharm and load the project that has been created:
 	1. For the repository `cdss-app-statemod-python`, `cd cdss-app-statemod-python/build-util` 
@@ -164,18 +166,19 @@ Running StateMod from the interface displays console information output in the
 The repository contains input files for the CDSS Yampa dataset and can
 be configured as shown below.
 Unfortunately, the run configurations are stored in the `.idea/workspace.xml` file,
-which is not saved in a repository and need to be defined for each user.
+which is not saved in a repository.
+Therefore, run configurations need to be defined for each user.
+This can be improved by implementing tests outside of PyCharm run configurations.
 Run configurations for other datasets can be configured similarly, as described in the following section,
 although datasets are not saved in the repository.
 The following steps define and run a configuration for the Yampa historical dataset.
 
 1. Click on ***Run*** > ***Edit Configurations...***.
-Select ***StateModMain*** under the ***Python*** tab
-2. For development and testing purposes the following parameters have been
-passed to the run configurations to test using the file `ym2015.rsp`. 
-3. Parameters: `-sim ../../../../test/datasets/cdss-yampa/StateMod/ym2015.rsp`
-4. Click ***Apply*** and ***OK***
-5. Now the program should be able to be run by doing **Shift** + **F10**. 
+2. Select ***Templates / Python*** and then the ***+*** to add a Python run configuration.
+Specify the configuration as shown:<br>
+![run-config-sim-ym2015H](doc/images/run-config-sim-ym2015H.png)
+3. Click ***OK*** to save the configuration.
+4. Now the program should be able to be run by doing **Shift** + **F10**. 
 
 To see output after StateMod has been run open the file `cdss-app-statemod-python/test/datasets/cdss-yampa/StateMod/ym2015.rsp.sim.log`. 
 
