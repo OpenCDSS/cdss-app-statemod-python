@@ -21,45 +21,46 @@
 #
 # NoticeEnd
 
+
 class StateModRunner:
     """
     StateModRunner runs a StateMod simulation or other run mode.
     """
 
-    def __init__(self, dataset, responseFile):
+    def __init__(self, dataset, response_file):
         """
         Constructor. Only need specifiy one of the parameters below.
         :param dataset: if dataset set _dataset to existing dataset
-        :param responseFile: response file to read dataset.
+        :param response_file: response file to read dataset.
         """
         if dataset:
             self.dataset = dataset
-        if responseFile:
+        if response_file:
             try:
-                readData = True
-                readTimeSeries = True
-                useGUI = True
+                read_data = True
+                read_time_series = True
+                use_gui = True
                 # TODO @jurentie 04/14/2019 - need to add GUI elements to Python
                 parent = None
-                dataset.readStateModFile(responseFile, readData, readTimeSeries, useGUI, parent)
+                dataset.read_statemod_file(response_file, read_data, read_time_series, use_gui, parent)
                 self.dataset = dataset
             except Exception as e:
                 pass
 
-    def runBaseFlows(self):
+    def run_baseflows(self):
         """
         Run the baseflow mode.
         """
-        print("Running baseflow mode.")
+        print("Running baseflow mode - not enabled.")
 
-    def runCheck(self):
+    def run_check(self):
         """
         Run the check.
         """
-        print("Running check mode.")
+        print("Running check mode - not enabled.")
 
-    def runSimulation(self):
+    def run_simulation(self):
         """
         Run the simulation.
         """
-        print("Running simulation.")
+        print("Running simulation - not enabled.")
