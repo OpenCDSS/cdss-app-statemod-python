@@ -14,29 +14,33 @@ CDSS prototype of StateMod written in Python
 
 ## Introduction ## 
 
-The code in this repository, and other related repositories,
-was ported from the Java code found in the separate repository
-[cdss-app-statemod-java](https://github.com/OpenCDSS/cdss-app-statemod-java),
-in an effort to determine which programming language would be best suited for
+The code in this repository and other related repositories was ported from Java code
+in an effort to evaluate which programming language(s) may be suitable for
 converting the StateMod software from Fortran to another language.
-The initial StateMod code in Fortran was converted to Java by [@Smalers](https://github.com/smalers) at the Open Water Foundation.
-The Java code was then converted to C# before being ported and converted to Python.
-The C# code can be found in the repository [cdss-app-statemod-cs](<https://github.com/OpenCDSS/cdss-app-statemod-cs>). 
 
-The process for porting the code from Java to Python was as follows:
+The StateMod Java prototype was implemented as a simple main program that uses extensive Java libraries that have been
+developed for data processing tools including TSTool and StateDMI.
+The Java code was ported to Python in this and other Python code repositories (see below) in order to create a Python StateMod prototype.
 
+The main repositories for StateMod language evaluation prototypes are:
+
+* Java:  [cdss-app-statemod-java](https://github.com/OpenCDSS/cdss-app-statemod-java)
+* C#:  [cdss-app-statemod-cs](https://github.com/OpenCDSS/cdss-app-statemod-cs) 
+* Fortran 2008:  [cdss-app-statemod-f2008](https://github.com/OpenCDSS/cdss-app-statemod-f2008) 
+* Python:  this repository
+
+The process for porting the code from Java to Python was as follows: 
 All code was converted by hand, since there was no competent automatic Java to Python converter for Python3.x.
 The first file ported over was `StateMod_Main.py` as the entry point for the program.
 Additional files were added with the necessary classes and functions that were needed by this entry point.
-Files were added in a branching manner to ensure that all code had access to the necessary classes and functions to run properly. 
 
-The files currently supported by StateMod-Python are:
+The StateMod dataset files that are currently supported by StateMod-Python are:
 
 - `.rsp` 
 - `.dds`
 - `.ddr`
 - `StateMod_StreamGage` (`.rin`, `.ris`)
-- All Time Series files read by `StateMod_TS.py` 
+- all time series files read by `StateMod_TS.py` 
 
 ## Repository Contents ##
 
@@ -49,7 +53,7 @@ Repository folder names should agree with GitHub repository names.
 Scripts in repository folders that process data should detect their starting location
 and then locate other folders based on the following convention.
 
-*See [Development Envrironment Setup](#development-environment-setup) below to easily download all repositories to a local environment* 
+See [Development Environment Setup](#development-environment-setup) below to easily download all repositories to a local environment.
 
 ```
 C:\Users\user\                                 User's home folder for Windows.
@@ -57,14 +61,14 @@ C:\Users\user\                                 User's home folder for Windows.
 /cygdrive/C/Users/user/                        User's home folder for Cygwin.
 /home/user/                                    User's home folder for Linux.
   owf-cdss/                                    Projects that are part of Colorado's Decision Support Systems.
-    StateMod-Python/                           StateMod C# product folder.
+    StateMod-Python/                           StateMod Python product folder.
                                                (name of this folder is not critical).
       ---- below here folder names should match exactly ----
-      git-repos/                               Git repositories for the Angular portal web application.
+      git-repos/                               Git repositories for the StateMod Python application.
         cdss-app-statemod-python/              Statemod Python main application code (this repo).
         cdss-lib-cdss-python/                  Library shared between CDSS components.
         cdss-lib-common-python/                Library of core utility code used by multiple repos.
-        cdss-lib-models-python/                Library to read/write CDSS StateCU and StateMod  model files.
+        cdss-lib-models-python/                Library for CDSS StateCU and StateMod  model files.
 ```
 
 This repository contains the following:
@@ -82,7 +86,7 @@ cdss-app-statemod-python
     datasets/
       cdss-ym2015/                             Tests for StateMod application - Yampa dataset input files.
   README.md                                    This file.
-  LICENSE.md                                   StateMod Java license file.
+  LICENSE.md                                   StateMod Python license file.
 ```
 
 ## Development Environment Setup ##
@@ -95,10 +99,11 @@ It is assumed that Git for Windows has been installed.  Git Bash will be used fo
 1. Go to the [PyCharm Download](<https://www.jetbrains.com/pycharm/download/#section=windows>) page.
 2. Select ***Download*** for the Community edition.
 3. If working on a Windows computer, run the downloaded `.exe` file and follow the installation steps in the install wizard.
+Accept the defaults.
 
 ### Download necessary repositories ###
 
-Several Python repositories are used, matching Java code that was ported to Python for this prototype.
+Several Python repositories are used, matching Java code repositories that were ported to Python for this prototype.
 Each repository is cloned to collectively result in the StateMod Python software.
 
 1. Create a folder:  `C:\Users\user\cdss-dev\StateMod-Python\git-repos`
@@ -107,7 +112,8 @@ Each repository is cloned to collectively result in the StateMod Python software
 	2. Clone main repository: `git clone https://github.com/OpenCDSS/cdss-app-statemod-python.git` 
 	3. `cd cdss-app-statemod-python/build-util` 
 	4. Run `./git-clone-all-sm.sh` and follow the prompts to clone related repositories.
-	This will automatically download the remaining repositories locally. 
+	This will automatically download the remaining repositories locally
+	if they do not already exist. 
 
 ### Set up a StateMod-Python project in PyCharm ###
 
@@ -116,7 +122,7 @@ This is different than Eclipse/Java, which uses a workspace that contains multip
 Because it is easy to set up a PyCharm project and because project files will be modified for different developers,
 it is best to NOT store PyCharm project files in repositories.
 Therefore, the following steps describe how to set up a new Python project
-that use multiple GitHub repositories, each containing Python code.
+that uses multiple GitHub repositories, each containing Python code.
 This approach can be revised later if a better approach is determined.
 
 1. Start PyCharm from the ***Start / JetBrains / PyCharm*** menu for the desired (typically most recent) version.
@@ -145,8 +151,9 @@ A folder `git-repos/.idea/` will be created with PyCharm project files,
 which will not be saved in any repository.
 If the virtual environment folder is not created,
 then create it by following the
-[PyCharm Virtual Environment instructions](https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html).
-5. For each repository, expand the folders, select the `src` folder and select
+[PyCharm Virtual Environment instructions](https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html)
+and the folder shown in the above image.
+5. For each repository, expand the folders, select the `src` folder, right-click and select
 ***Mark Directory as / Sources Root*** to let PyCharm know which folders contain source code
 that will be known for Python `import` statements.
 The PyCharm interface will be similar to the following:<br>
@@ -177,18 +184,21 @@ Unfortunately, the run configurations are stored in the `.idea/workspace.xml` fi
 which is not saved in a repository.
 Therefore, run configurations need to be defined for each user.
 This can be improved by implementing tests outside of PyCharm run configurations.
-Run configurations for other datasets can be configured similarly, as described in the following section,
-although datasets are not saved in the repository.
+Run configurations for other datasets can be configured similarly, as described in the following steps,
+although datasets other than ym2015 are not saved in the repository.
 The following steps define and run a configuration for the Yampa historical dataset.
 
 1. Click on ***Run*** > ***Edit Configurations...***.
-2. Select ***Templates / Python*** and then the ***+*** to add a Python run configuration.
-Specify the configuration as shown:<br>
+2. Select ***Templates / Python*** and then the ***+*** to add a Python run configuration
+that used the template.
+Specify the configuration as shown.
+An attempt to use PyCharm configuration variables rather than full paths was not successful,
+but there may be a way to do this.<br>
 ![run-config-sim-ym2015H](doc/images/run-config-sim-ym2015H.png)
 3. Click ***OK*** to save the configuration.
-4. Now the program should be able to be run by doing **Shift** + **F10**. 
+4. Now the program should be able to be run by doing **Shift** + **F10** or use the ***Run*** menu. 
 
-To see output after StateMod has been run open the file `cdss-app-statemod-python/test/datasets/cdss-yampa/StateMod/ym2015.rsp.sim.log`. 
+To see output after StateMod has been run open the file `cdss-app-statemod-python/test/datasets/cdss-ym2015/StateMod/ym2015.rsp.sim.log`. 
 
 ### Add Additional Datasets ###
 
@@ -199,6 +209,10 @@ To add other datasets, download from the CDSS website and copy the `StateMod` fo
 Then create a run configuration similar to that described in the previous section.
 
 ### Run PyCharm After Initial Setup ###
+
+To run PyCharm after initial setup,
+open a Windows Command prompt window, change to `build-util` folder and run `run-pycharm-statemod.bat`.
+This batch file will run PyCharm by specifying the project to open.
 
 ## Contributing ##
 
@@ -212,11 +226,6 @@ Contributions to this project can be submitted using the following options:
     code review before committing the pull request.
 
 See also the [OpenCDSS / StateMod protocols](http://opencdss.state.co.us/opencdss/statemod/)
-
-## Maintainers ##
-
-* Justin Rentie, Open Water Foundation ([@jurentie](https://github.com/jurentie))
-* Steve Malers, Open Water Foundation ([@Smalers](https://github.com/smalers))
 
 ## License ##
 
