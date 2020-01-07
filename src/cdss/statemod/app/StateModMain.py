@@ -19,6 +19,7 @@
 import logging
 import os
 from pathlib import Path
+import psutil
 import sys
 
 import RTi.Util.Logging.log_util as log_util
@@ -26,7 +27,11 @@ import RTi.Util.Logging.log_util as log_util
 from cdss.statemod.app.StateModRunModeType import StateModRunModeType
 from cdss.statemod.app.StateModRunner import StateModRunner
 from DWR.StateMod.StateMod_DataSet import StateMod_DataSet
+from DWR.StateMod.StateMod_DataSetComponentType import StateMod_DataSetComponentType
+from DWR.StateMod.StateMod_Diversion import StateMod_Diversion
+from DWR.StateMod.StateMod_TS import StateMod_TS
 from RTi.Util.IO.IOUtil import IOUtil
+from RTi.Util.IO.PropList import PropList
 
 
 class StateModMain:
@@ -70,7 +75,9 @@ class StateModMain:
 
         try:
             # Set program name and version
+            print("Setting program data...")
             IOUtil.set_program_data(self.PROGRAM_NAME, self.PROGRAM_VERSION, args)
+            print("...back from setting program data.")
 
             # Set the initial working directory based on user's starting location
             # - this is used to determine the absolute path for the response file
@@ -83,8 +90,7 @@ class StateModMain:
                 initial_checks = True
                 self.parse_args(args, initial_checks)
             except Exception as e2:
-                logger.warning("Error parsing command line. Exiting.")
-                logger.warning(e2)
+                logger.warning("Error parsing command line. Exiting.", exc_info=True)
                 self.quit_program(1)
 
             # If a response file was not specified, print the usage and exit
@@ -98,13 +104,21 @@ class StateModMain:
             # If a response file was specified but does not exist, print an error and exit
             if not self.response_file_path.exists():
                 print("")
-                print("Response file as absolute path could not be determined from \"" + str(self.response_file) + "\".")
+                print("Response file as absolute path could not be determined from \"" +
+                      str(self.response_file) + "\".")
                 print("")
                 self.print_usage()
                 self.quit_program(1)
 
             # Initialize logging
+            # - do after parsing command line parameters because need to determine run mode
+            # - the response file will exist so the path will also be defined
             self.initialize_logging()
+            logger.info("Back from initializing logging.")
+
+            # Print memory usage to log file
+            process = psutil.Process(os.getpid())
+            logging.info("Memory use after startup:  " + str(process.memory_info().rss))
 
             # Now parse the command line arguments
             # - the response file is determined first so that the working directory is determined
@@ -113,8 +127,7 @@ class StateModMain:
                 initial_checks = False
                 self.parse_args(args, initial_checks)
             except Exception as e2:
-                logger.warning("Error parsing command line. Exiting.")
-                logger.warning(e2)
+                logger.warning("Error parsing command line. Exiting.", exc_info=True)
                 self.quit_program(1)
 
             if self.run_mode is None:
@@ -124,7 +137,9 @@ class StateModMain:
                 self.print_usage()
                 self.quit_program(1)
             else:
-                print("Run mode is " + str(self.run_mode))
+                message = "Run mode is " + str(self.run_mode)
+                print(message)
+                logger.info(message)
 
             # Error indicator
             error = False
@@ -140,11 +155,38 @@ class StateModMain:
                 # TODO @jurentie 04/14/2019 - need to work out GUI components for python
                 parent = None
                 self.dataset = StateMod_DataSet()
-                self.dataset.read_statemod_file(self.response_file, read_data, read_time_series, use_gui, parent)
+                self.dataset.read_statemod_file(self.response_file_path, read_data, read_time_series, use_gui, parent)
+
             except Exception as e2:
-                logger.warning("Error reading response file. See the log file.")
-                logger.warning(e2)
+                message = "Error reading response file. See the log file."
+                logger.warning(message, exc_info=True)
+                print(message + "  See log file.")
                 pass
+
+            # Print memory usage
+            process = psutil.Process(os.getpid())
+            logging.info("Memory use after reading dataset:  " + str(process.memory_info().rss))
+
+            # For testing, output the diversion stations and diversion historical monthly time series
+            # - use kdiff3 to do visual comparison of data lines
+            dds_comp = self.dataset.get_component_for_component_type(StateMod_DataSetComponentType.DIVERSION_STATIONS)
+            dds_infile = None
+            dds_outfile = dds_comp.get_data_file_name() + ".testout"
+            new_comments = []
+            use_daily_data = True
+            StateMod_Diversion.write_statemod_file(dds_infile, dds_outfile,
+                                                   dds_comp.get_data(), new_comments, use_daily_data)
+
+            ddh_comp = self.dataset.get_component_for_component_type(
+                StateMod_DataSetComponentType.DIVERSION_TS_MONTHLY)
+            ddh_infile = None
+            ddh_outfile = ddh_comp.get_data_file_name() + ".testout"
+            props = PropList("")
+            props.set(key="CalendarType", value="Water")
+            props.set(key="OutputFile", value=ddh_outfile)
+            props.set(key="OutputPrecision", value="0")
+            # Write using properties, which will open the output file.
+            StateMod_TS.write_time_series_list_props(ddh_comp.get_data(), props)
 
             if not error:
                 # Run StateMod for the requested run mode, consistent with the original software
@@ -153,13 +195,16 @@ class StateModMain:
                     self.run_statemod(self.dataset, self.run_mode)
                     pass
                 except Exception as e2:
-                    logger.warning("Error running StateMod. See the log file.")
-                    logger.warning(e2)
+                    message = "Error running StateMod."
+                    logger.warning(message, exc_info=True)
+                    print(message + "  See log file.")
+                    self.quit_program(1)
                     pass
         except Exception as e:
             # Main catch
-            logger.warning("Error starting StateMod.")
-            logger.warning(e)
+            message = "Error running StateMod."
+            logger.warning(message, exc_info=True)
+            print(message + "  See log file.")
             self.quit_program(1)
 
     def parse_args(self, args, initial_checks):
@@ -228,7 +273,7 @@ class StateModMain:
 
         nl = os.linesep
         print("STOP " + str(status) + nl)
-        sys.exit()
+        sys.exit(status)
 
     def run_statemod(self, dataset_to_run, run_mode):
         """
@@ -259,6 +304,7 @@ class StateModMain:
         # First convert the file to absolute path.
         message = "Response file (from command line): " + response_file_req
         print(message)
+        logger.info(message)
         # Message.printStatus(2, routine, message)
         # response_file_absolute = IOUtil.verifyPathForOS(IOUtil.toAbsolutePath(IOUtil.getProgramWorkingDir(),
         #                                                                    responseFileReq), True)
@@ -267,6 +313,7 @@ class StateModMain:
         response_file_absolute = os.path.abspath(response_file_req)
         message = "Response file (absolute path): " + response_file_absolute
         print(message)
+        logger.info(message)
         # Message.printStatus(2, routine, message)
         self.response_file_path = Path(response_file_absolute)
         if self.response_file_path.exists():
@@ -274,6 +321,7 @@ class StateModMain:
             # from above logic
             message = "Response file (with .rsp) exists:  " + str(self.response_file_path)
             print(message)
+            logger.info(message)
             self.working_dir = self.response_file_path.parent
         elif not response_file_absolute.endswith(".rsp"):
             # Try adding the extension
@@ -282,6 +330,7 @@ class StateModMain:
             if self.response_file_path.exists():
                 message = "Response file (with .rsp appended) exists: " + response_file_absolute2
                 print(message)
+                logger.info(message)
                 # Reset the working directory to that of the response file, in case it changed from
                 # above logic
                 self.working_dir = self.response_file_path.parent
@@ -289,10 +338,12 @@ class StateModMain:
                 # Reset the path to None since did not find a valid path
                 message = "Response file (with .rsp appended) does not exist: " + response_file_absolute2
                 print(message)
+                logger.warning(message)
                 self.response_file_path = None
         else:
             message = "Response file (with .rsp) does not exist:  " + str(self.response_file_path)
             print(message)
+            logger.warning(message)
 
     def set_working_dir_initial(self):
         # The following DOES NOT have slash at the end of the working directory
@@ -302,11 +353,21 @@ class StateModMain:
         # graph occurs, this default for dialogs should be the home of the command file.
         message = "Setting working directory to user directory \"" + working_dir + "\"."
         print(message)
+        logger = logging.getLogger(__name__)
+        logger.info(message)
 
     def initialize_logging(self):
         if self.response_file is not None:
-            print("Setting up customized app logging config")
-            log_file = self.response_file + ".sim.log"
+            print("Setting up customized app logging configuration.")
+            run_mode_string = "unknown"
+            if self.run_mode == StateModRunModeType.BASEFLOWS:
+                run_mode_string = "baseflows"
+            elif self.run_mode == StateModRunModeType.CHECK:
+                run_mode_string = "check"
+            elif self.run_mode == StateModRunModeType.SIMULATE:
+                run_mode_string = "sim"
+            log_file = self.response_file_path.as_posix() + "." + run_mode_string + ".log"
+            # Log level that is finest level to print
             initial_file_log_level = logging.DEBUG
             logger = log_util.initialize_logging(app_name="StateMod", logfile_name=log_file,
                                                  logfile_log_level=initial_file_log_level)

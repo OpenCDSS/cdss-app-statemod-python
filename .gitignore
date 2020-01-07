@@ -10,6 +10,9 @@ __pycache__/
 # Ignore "junk" and other files often used for work
 junk
 
+# Ignore test output files written to do basic comparison with input
+*.testout
+
 # Ignore compiled Python files
 *.py[cod]
 

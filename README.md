@@ -156,6 +156,14 @@ The PyCharm interface will be similar to the following:<br>
 	2. Run `run-pycharm-statemod.bat` in a Windows Command Prompt window.
 	This batch file will run PyCharm by specifying the project to open.
 
+The virtual environment as initially installed will have minimal additional Python packages installed.  
+To view the list, use ***File / Settings*** and then ***Project: / Project Interpreter***.
+Installed packages will be listed.  The following additional packages need to be installed:
+
+* `pip` - should be installed by default, used to download and install packages
+* `psutil` - process utilities, needed to determine memory usage
+* `setuptools` - should be installed by default, used to create deployable packages
+
 ### Edit Run Configurations ###
 
 Run configurations are used to run the StateMod software from within PyCharm,
